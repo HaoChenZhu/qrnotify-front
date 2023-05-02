@@ -1,0 +1,25 @@
+@keyframes border-pulse {
+    0% {
+        border-color: #f00;
+    }
+
+    25% {
+        border-color: #0f0;
+    }
+
+    50% {
+        border-color: #00f;
+    }
+
+    75% {
+        border-color: #0f0;
+    }
+
+    100% {
+        border-color: #f00;
+    }
+}
+
+.border-pulse {
+    animation: border-pulse 6s infinite;
+}

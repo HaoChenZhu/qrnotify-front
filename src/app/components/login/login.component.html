@@ -1,0 +1,43 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-4 md:p-6 rounded-lg shadow-md w-full md:w-auto">
+    <h2 class="text-center text-lg font-medium mb-4 md:mb-6">Iniciar sesión</h2>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <div class="mb-2 md:mb-4">
+        <label for="name" class="block text-gray-700 font-medium mb-2"
+          >Nombre:</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Introduzca su nombre"
+          class="border-gray-300 rounded-lg py-2 px-3 w-full"
+          [(ngModel)]="user.name"
+          required
+        />
+      </div>
+      <div class="mb-2 md:mb-6">
+        <label for="phone" class="block text-gray-700 font-medium mb-2"
+          >Teléfono:</label
+        >
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="Introduzca su teléfono"
+          class="border-gray-300 rounded-lg py-2 px-3 w-full"
+          [(ngModel)]="user.phone"
+          required
+        />
+      </div>
+      <div class="flex items-center justify-center">
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg"
+        >
+          Iniciar sesión
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

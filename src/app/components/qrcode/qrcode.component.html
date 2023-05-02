@@ -1,0 +1,17 @@
+<div class="flex flex-col justify-center items-center bg-white h-screen">
+  <h1
+    class="text-6xl font-bold mb-4 text-left pb-12 pt-14 text-gray-700 relative"
+  >
+    <span class="bg-gray-400 w-full h-1 absolute bottom-0 left-0"></span>
+    <span class="relative z-10">
+      <span class="bg-slate-500 px-2 py-1 rounded-md">QR</span>Notify
+    </span>
+  </h1>
+  <div class="flex justify-center items-center">
+    <qrcode
+      class="border-4 border-solid border-transparent border-blue-500 bg-white shadow border-pulse"
+      [scale]="20"
+      [qrdata]="'https://www.google.com/'"
+    ></qrcode>
+  </div>
+</div>
