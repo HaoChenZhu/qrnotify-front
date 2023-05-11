@@ -11,7 +11,20 @@ import { FormsModule } from '@angular/forms';
 import { PopupComponent } from './components/shared/popup/popup.component';
 import { QrcodeComponent } from './components/qrcode/qrcode.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpCustomInterceptor } from './core/http/http-custom-interceptor';
+import { CallbackComponent } from './components/callback/callback.component';
+import { OktaAuthModule } from '@okta/okta-angular';
+import { OktaAuth } from '@okta/okta-auth-js';
 
+const oktaConfig = {
+  issuer: 'https://dev-86838266.okta.com/oauth2/default',
+  clientId: '0oa9gmfbgfJUiFXEG5d7',
+  redirectUri: window.location.origin + '/login/callback',
+  scopes: ['openid', 'profile', 'email'],
+  pkce: true
+};
+const oktaAuth = new OktaAuth(oktaConfig);
 
 @NgModule({
   declarations: [
@@ -22,16 +35,20 @@ import { QRCodeModule } from 'angularx-qrcode';
     ConfirmationPopupComponent,
     PopupComponent,
     QrcodeComponent,
+    CallbackComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    QRCodeModule
-
+    QRCodeModule,
+    HttpClientModule,
+    OktaAuthModule.forRoot({ oktaAuth })
   ],
   providers: [
-    FormsModule
+    FormsModule,
+    { provide: OktaAuth, useValue: oktaAuth },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpCustomInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
