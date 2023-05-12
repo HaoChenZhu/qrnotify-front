@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { EnvService } from '../core/environment/env.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,12 @@ export class LoginService {
   telephone = {}
   private _actionModal = new BehaviorSubject<boolean>(false);
   private url = "http://localhost:8081/nebrija/qrnotify-admin/user"
+  private readonly ADMIN_URL = this.env.apiRestDomain + this.env.adminContext + '/admin'
 
   // Observable modal action
   actionModal$ = this._actionModal.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private env: EnvService,) { }
 
 
   openVerificationModal(title: string, description?: string, option?: string) {
@@ -42,6 +44,7 @@ export class LoginService {
     this._actionModal.next(action);
   }
   getSomeData() {
-    return this.http.get(this.url);
+    console.log(this.ADMIN_URL)
+    return this.http.get<any>(this.ADMIN_URL);
   }
 }

@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(loginForm: NgForm) {
+    console.log(this.oktaAuth.getAccessToken());
     this.getData();
     console.log(loginForm.value);
     this._loginService.telephone = loginForm.value.phone;

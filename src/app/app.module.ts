@@ -16,6 +16,7 @@ import { HttpCustomInterceptor } from './core/http/http-custom-interceptor';
 import { CallbackComponent } from './components/callback/callback.component';
 import { OktaAuthModule } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
+import { EnvServiceProvider } from './core/environment/env.service.provider';
 
 const oktaConfig = {
   issuer: 'https://dev-86838266.okta.com/oauth2/default',
@@ -49,6 +50,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
     FormsModule,
     { provide: OktaAuth, useValue: oktaAuth },
     { provide: HTTP_INTERCEPTORS, useClass: HttpCustomInterceptor, multi: true },
+    EnvServiceProvider
   ],
   bootstrap: [AppComponent]
 })
