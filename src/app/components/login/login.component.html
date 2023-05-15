@@ -1,39 +1,77 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white p-4 md:p-6 rounded-lg shadow-md w-full md:w-auto">
-    <h2 class="text-center text-lg font-medium mb-4 md:mb-6">Iniciar sesión</h2>
+<div class="min-h-screen flex items-center justify-center">
+  <div class="p-4 md:p-6 w-full md:w-auto">
+    <img
+      src="assets/images/logo.jpeg"
+      alt="Logo"
+      class="w-auto h-40 align-middle mx-auto mb-10 rounded-2xl"
+    />
+
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-      <div class="mb-2 md:mb-4">
-        <label for="name" class="block text-gray-700 font-medium mb-2"
-          >Nombre:</label
+      <div class="mb-2 md:mb-8">
+        <label
+          for="name"
+          class="block text-center text-lg text-white font-medium mb-2"
+          >Nombre</label
         >
         <input
           type="text"
           id="name"
           name="name"
           placeholder="Introduzca su nombre"
-          class="border-gray-300 rounded-lg py-2 px-3 w-full"
-          [(ngModel)]="user.name"
+          class="border-gray-300 rounded-lg py-2 px-3 w-full text-center"
+          [(ngModel)]="name"
           required
+          minlength="3"
+          [ngClass]="{ 'border-red-500': nameError }"
+          #nameField="ngModel"
         />
+        <div
+          *ngIf="nameField.invalid && nameField.touched"
+          class="text-red-500"
+        >
+          <div *ngIf="nameField.errors?.['required']">
+            El nombre es obligatorio.
+          </div>
+          <div *ngIf="nameField.errors?.['minlength']">
+            El nombre debe tener al menos 3 caracteres.
+          </div>
+        </div>
       </div>
-      <div class="mb-2 md:mb-6">
-        <label for="phone" class="block text-gray-700 font-medium mb-2"
-          >Teléfono:</label
+
+      <div class="mb-2 md:mb-8">
+        <label
+          for="phone"
+          class="block text-center text-lg text-white font-medium mb-2"
+          >Teléfono</label
         >
         <input
           type="tel"
           id="phone"
           name="phone"
           placeholder="Introduzca su teléfono"
-          class="border-gray-300 rounded-lg py-2 px-3 w-full"
-          [(ngModel)]="user.phone"
+          class="border-gray-300 rounded-lg py-2 px-3 w-full text-center"
+          [(ngModel)]="phone"
           required
+          minlength="9"
+          [ngClass]="{ 'border-red-500': phoneError }"
+          #phoneField="ngModel"
         />
+        <div
+          *ngIf="phoneField.invalid && phoneField.touched"
+          class="text-red-500"
+        >
+          <div *ngIf="phoneField.errors?.['required']">
+            El número de teléfono es obligatorio.
+          </div>
+          <div *ngIf="phoneField.errors?.['minlength']">
+            El número de teléfono debe tener al menos 9 caracteres.
+          </div>
+        </div>
       </div>
-      <div class="flex items-center justify-center">
+      <div class="flex items-center justify-center my-8">
         <button
           type="submit"
-          class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg"
+          class="bg-blue-500 hover:bg-blue-600 text-white bg-opacity-70 font-medium py-2 px-4 rounded-lg"
         >
           Iniciar sesión
         </button>

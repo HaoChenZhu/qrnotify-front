@@ -7,8 +7,8 @@
 
   // Whether or not to enable debug mode
   window.__env.enableDebug = true;
-})(this);
- */
+})(this); */
+
 (function (window) {
   window.__env = window.__env || {};
 

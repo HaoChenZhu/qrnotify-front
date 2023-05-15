@@ -4,7 +4,6 @@ export class EnvService {
     public apiRestDomain = '';
     public adminContext = '';
     constructor() {
-        console.log('EnvService initialized with:', this); // ¿Qué imprime esto?
     }
 
 }

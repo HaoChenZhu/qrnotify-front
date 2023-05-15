@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { EnvService } from '../core/environment/env.service';
+import { IUserDto } from '../models/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,12 @@ export class LoginService {
   title = 'commonTitle';
   description = 'commonDesc';
   option = 'optionDesc';
-  telephone = {}
+  telephone = '';
+  name = '';
   private _actionModal = new BehaviorSubject<boolean>(false);
-  private url = "http://localhost:8081/nebrija/qrnotify-admin/user"
-  private readonly ADMIN_URL = this.env.apiRestDomain + this.env.adminContext + '/admin'
+  private readonly USER_URL = this.env.apiRestDomain + this.env.adminContext + '/user'
+  private readonly LOGIN_URL = this.env.apiRestDomain + this.env.adminContext + '/login'
+  private readonly VERIFY_URL = this.env.apiRestDomain + this.env.adminContext + '/user/verify'
 
   // Observable modal action
   actionModal$ = this._actionModal.asObservable();
@@ -43,8 +46,24 @@ export class LoginService {
   changeAction(action: boolean) {
     this._actionModal.next(action);
   }
-  getSomeData() {
-    console.log(this.ADMIN_URL)
-    return this.http.get<any>(this.ADMIN_URL);
+
+  login(name: string, phone_number: string) {
+    const body = {
+      'name': name,
+      'phone_number': phone_number
+    };
+    console.log(body)
+    return this.http.post<IUserDto>(this.LOGIN_URL, body);
   }
+
+  verify(name: string, phone_number: string, code: string) {
+    const body = {
+      'name': name,
+      'phone_number': phone_number,
+      'code': code
+    };
+    console.log(body)
+    return this.http.post<IUserDto>(this.VERIFY_URL, body);
+  }
+
 }

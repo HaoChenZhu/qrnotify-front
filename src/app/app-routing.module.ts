@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { QrcodeComponent } from './components/qrcode/qrcode.component';
 import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
+import { AdminComponent } from './components/login/admin/admin.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [OktaAuthGuard] },
-  { path: 'qrcode', component: QrcodeComponent, canActivate: [OktaAuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: 'qrcode', component: QrcodeComponent },
   { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [OktaAuthGuard] },
 
 ];
 

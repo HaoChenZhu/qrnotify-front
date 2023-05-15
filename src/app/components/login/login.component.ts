@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import OktaAuth from '@okta/okta-auth-js';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/core/security/auth.service';
+import { IUserDto } from 'src/app/models/user.interface';
 import { CommonService } from 'src/app/services/common.service';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -17,11 +15,10 @@ export class LoginComponent implements OnInit {
   subscription: Subscription | undefined;
   modal: boolean = false;
   data: any;
-
-  user = {
-    name: '',
-    phone: ''
-  };
+  name: string = '';
+  phone: string = '';
+  nameError: boolean = false;
+  phoneError: boolean = false;
   constructor(
     private _commonService: CommonService,
     private _loginService: LoginService,
@@ -37,27 +34,48 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(loginForm: NgForm) {
-    console.log(this.oktaAuth.getAccessToken());
-    this.getData();
-    console.log(loginForm.value);
-    this._loginService.telephone = loginForm.value.phone;
-    this._loginService.changeAction(true);
-    this._loginService.openVerificationModal('Login', 'Are you sure you want to login?', 'Login')
-    loginForm.reset();
-  }
+    this.nameError = false;
+    this.phoneError = false;
 
-  getData(): void {
-    this._loginService.getSomeData().subscribe(data => {
-      console.log('Datos obtenidos:', data); // imprime los datos recuperados en la consola
-      this.data = data;
-    }, (error: any) => {
-      console.error(error);
+    if (loginForm.controls['name'].invalid && loginForm.controls['name'].touched) {
+      if (loginForm.controls['name'].errors?.['required']) {
+        this.nameError = true;
+      } else if (loginForm.controls['name'].errors?.['minlength']) {
+        this.nameError = true;
+      }
+    }
+
+    if (loginForm.controls['phone'].invalid && loginForm.controls['phone'].touched) {
+      if (loginForm.controls['phone'].errors?.['required']) {
+        this.phoneError = true;
+      } else if (loginForm.controls['phone'].errors?.['minlength']) {
+        this.phoneError = true;
+      }
+    }
+
+    if (loginForm.invalid) {
+      return;
+    }
+
+
+
+    this._loginService.login(loginForm.value.name, loginForm.value.phone).subscribe({
+      next: (user: IUserDto) => {
+        console.log(user)
+        // Aquí puedes manejar la respuesta de la API si es necesario.
+        // Por ejemplo, podrías mostrar un mensaje de que el código de confirmación ha sido enviado.
+        this._loginService.telephone = user.phone_number || '';
+        this._loginService.name = user.name || '';
+      },
+      error: (error) => {
+        // Aquí puedes manejar los errores que puedan ocurrir al iniciar sesión.
+        alert("Ha ocurrido un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.");
+      },
+      complete: () => {
+        this._loginService.openVerificationModal('Login', 'Are you sure you want to login?', 'Login')
+        loginForm.reset();
+      }
     });
   }
-  async getAccessToken() {
-    const accessToken = await this.oktaAuth.getAccessToken;
-    console.log('Access Token:', accessToken);
-  }
-
 
 }

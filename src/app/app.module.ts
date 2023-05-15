@@ -17,6 +17,8 @@ import { CallbackComponent } from './components/callback/callback.component';
 import { OktaAuthModule } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { EnvServiceProvider } from './core/environment/env.service.provider';
+import { AdminComponent } from './components/login/admin/admin.component';
+import { HttpUserInterceptor } from './core/http/http-user-interceptor';
 
 const oktaConfig = {
   issuer: 'https://dev-86838266.okta.com/oauth2/default',
@@ -37,6 +39,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
     PopupComponent,
     QrcodeComponent,
     CallbackComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
   providers: [
     FormsModule,
     { provide: OktaAuth, useValue: oktaAuth },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpUserInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpCustomInterceptor, multi: true },
     EnvServiceProvider
   ],

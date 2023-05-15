@@ -17,8 +17,6 @@ export const EnvServiceFactory = () => {
             env[key] = (window as any)['__env'][key];
         }
     }
-    console.log('env:', env); // ¿Qué imprime esto?
-
     return env;
 };
 

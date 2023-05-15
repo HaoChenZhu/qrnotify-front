@@ -11,7 +11,7 @@ export class AppComponent {
 
   constructor(private router: Router) { }
   shouldShowFooter() {
-    return !this.router.url.includes('/qrcode');
+    return !this.router.url.includes('/login') && !this.router.url.includes('/qrcode');
   }
 
 

@@ -1,15 +1,15 @@
 <div
   id="modal"
-  class="container fixed z-40 hidden min-h-full min-w-full place-content-center px-36 pt-20 backdrop-brightness-50 xl:px-80"
+  class="container fixed z-40 hidden min-h-full min-w-full place-content-center pt-56 backdrop-brightness-50"
   *ngIf="check()"
 >
-  <div class="grid gap-4 rounded-xl bg-white p-12 text-center shadow">
+  <div class="grid gap-4 rounded-xl bg-white p-12 sm:p-12 text-center shadow">
     <h3 class="font-bold">{{ title }}</h3>
     <p>{{ description }}</p>
     <div *ngIf="!option">
       <span></span>
       <button
-        class="w-40 cursor-pointer rounded bg-primary-green p-2"
+        class="w-40 cursor-pointer rounded bg-blue-500 p-2"
         (click)="close()"
       >
         'Aceptar'
@@ -18,13 +18,13 @@
     </div>
     <div *ngIf="option" class="space-x-2">
       <button
-        class="w-40 cursor-pointer rounded border-2 border-primary-green p-2 text-primary-green"
+        class="w-40 sm:w-40 cursor-pointer rounded border-2 p-2"
         (click)="close()"
       >
         'Cancelar'
       </button>
       <button
-        class="w-40 cursor-pointer rounded bg-primary-green p-2"
+        class="w-40 sm:w-40 cursor-pointer rounded bg-slate-400 p-2"
         (click)="confirm()"
       >
         {{ option }}
