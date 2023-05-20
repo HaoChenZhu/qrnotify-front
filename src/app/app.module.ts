@@ -14,19 +14,33 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpCustomInterceptor } from './core/http/http-custom-interceptor';
 import { CallbackComponent } from './components/callback/callback.component';
-import { OktaAuthModule } from '@okta/okta-angular';
+import { OktaAuthModule, OktaConfig } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { EnvServiceProvider } from './core/environment/env.service.provider';
 import { AdminComponent } from './components/login/admin/admin.component';
 import { HttpUserInterceptor } from './core/http/http-user-interceptor';
+import { TopicComponent } from './components/topic/topic.component';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { EnvService } from './core/environment/env.service';
 
-const oktaConfig = {
+export const oktaConfig: any = {
   issuer: 'https://dev-86838266.okta.com/oauth2/default',
-  clientId: '0oa9gmfbgfJUiFXEG5d7',
-  redirectUri: window.location.origin + '/login/callback',
+  clientId: '',
+  redirectUri: '',
   scopes: ['openid', 'profile', 'email'],
   pkce: true
 };
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: '',
+  port: 8084,
+  path: '/mqtt',
+  protocol: 'wss',
+  username: '',
+  password: '',
+};
+
+
 const oktaAuth = new OktaAuth(oktaConfig);
 
 @NgModule({
@@ -40,6 +54,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
     QrcodeComponent,
     CallbackComponent,
     AdminComponent,
+    TopicComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +62,9 @@ const oktaAuth = new OktaAuth(oktaConfig);
     FormsModule,
     QRCodeModule,
     HttpClientModule,
-    OktaAuthModule.forRoot({ oktaAuth })
+    OktaAuthModule.forRoot({ oktaAuth }),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+
   ],
   providers: [
     FormsModule,
@@ -58,4 +75,29 @@ const oktaAuth = new OktaAuth(oktaConfig);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private env: EnvService) {
+    const mqttBroker = this.env ? this.env.mqttBroker : undefined; // Verificar si env está definido
+    const issuer = this.env ? this.env.oktaDomain : undefined; // Valor predeterminado para issuer si no está definido
+    const clientId = this.env ? this.env.oktaClientId : undefined; // Valor predeterminado para clientId si no está definido
+    const port = this.env ? this.env.mqttPort : undefined; // Verificar si env está definido
+    const username = this.env ? this.env.mqttUser : undefined; // Verificar si env está definido
+    const password = this.env ? this.env.mqttPassword : undefined; // Verificar si env está definido
+    const callback = window.location.origin + '/login/callback'
+    console.log('mqttBroker: ', mqttBroker, 'port: ', port, 'username: ', username, 'password: ', password, 'issuer: ', issuer, 'clientId: ', clientId, 'callback: ', callback);
+    if (mqttBroker && port && username && password) {
+      MQTT_SERVICE_OPTIONS.hostname = mqttBroker;
+      MQTT_SERVICE_OPTIONS.port = Number(port);
+      MQTT_SERVICE_OPTIONS.username = username;
+      MQTT_SERVICE_OPTIONS.password = password;
+    }
+
+    if (issuer && clientId && callback) {
+      oktaConfig.issuer = issuer;
+      oktaConfig.clientId = clientId;
+      oktaConfig.redirectUri = callback;
+    }
+  }
+
+}
+

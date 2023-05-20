@@ -3,7 +3,11 @@ export class EnvService {
 
     public apiRestDomain = '';
     public adminContext = '';
-    constructor() {
-    }
-
+    public mqttBroker = '';
+    public mqttPort = '';
+    public mqttUser = '';
+    public mqttPassword = '';
+    public oktaDomain = '';
+    public oktaClientId = '';
+    constructor() { }
 }
