@@ -2,15 +2,12 @@
 <app-confirmation-popup></app-confirmation-popup>
 <!-- <app-header></app-header> -->
 <div
-  class="bg-slate-500 min-h-screen"
-  style="
-    background-image: url('assets/images/backgorund.png');
-    background-size: cover;
-    background-position: center;
-  "
+  class="mx-auto min-h-screen px-4 bg-gradient-to-tl from-green-400 via-cyan-500 to-blue-500"
 >
   <router-outlet></router-outlet>
+  <!-- Div adicional para agregar espacio al final del contenido principal -->
+
+  <ng-container *ngIf="shouldShowFooter()">
+    <app-footer></app-footer>
+  </ng-container>
 </div>
-<ng-container *ngIf="shouldShowFooter()">
-  <app-footer></app-footer>
-</ng-container>

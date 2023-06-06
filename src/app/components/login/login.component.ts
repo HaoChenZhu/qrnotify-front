@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private _commonService: CommonService,
     private _loginService: LoginService,
-    private oktaAuth: OktaAuth,
     private router: Router,
   ) { }
   ngOnInit(): void {
@@ -36,7 +35,6 @@ export class LoginComponent implements OnInit {
         console.log('open modal');
       }
     })
-
   }
 
   onSubmit(loginForm: NgForm) {
@@ -65,13 +63,10 @@ export class LoginComponent implements OnInit {
 
     this._loginService.login(loginForm.value.name, loginForm.value.phone).subscribe({
       next: (user: IUserDto) => {
-        // Aquí puedes manejar la respuesta de la API si es necesario.
-        // Por ejemplo, podrías mostrar un mensaje de que el código de confirmación ha sido enviado.
         this._loginService.telephone = user.phone_number || '';
         this._loginService.name = user.name || '';
       },
       error: (error) => {
-        // Aquí puedes manejar los errores que puedan ocurrir al iniciar sesión.
         alert("Ha ocurrido un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.");
       },
       complete: () => {
