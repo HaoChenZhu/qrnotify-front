@@ -21,9 +21,13 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this.getUserDetails();
     this.turnId = localStorage.getItem('turnId');
-    if (!this.turnId) this.activateTurn();
+    if (!this.turnId) {
+      this.activateTurn();
+    } else {
+      this.getTurnById();
 
-    this.getTurnById();
+    }
+
   }
 
   getTurnById() {

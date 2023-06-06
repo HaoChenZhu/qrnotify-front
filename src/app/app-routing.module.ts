@@ -14,6 +14,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [OktaAuthGuard] },
   { path: 'topic', component: TopicComponent },
   { path: 'turn/:id', component: TurnComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({
