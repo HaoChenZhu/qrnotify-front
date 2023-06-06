@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./qrcode.component.css']
 })
 export class QrcodeComponent {
-  qrdata: string = 'https://www.google.com/';
+  qrdata: string = 'https://qrnotify-front.herokuapp.com/login';
 }

@@ -44,7 +44,6 @@ export class AdminComponent implements OnInit {
   async getUserDetails() {
     const user = await this.oktaAuth.getUser();
     this.adminName = user.name;
-    console.log(user);
   }
 
   activateTurn() {
@@ -55,7 +54,6 @@ export class AdminComponent implements OnInit {
       this.currentNumber = data.current_turn || " ";
       this.updatePendingClientsCount();
       if (this.turnId) localStorage.setItem('turnId', this.turnId);
-      console.log(data);
     });
   }
 
@@ -65,7 +63,6 @@ export class AdminComponent implements OnInit {
       this.turnName = data.name;
       this.currentNumber = data.current_turn;
       this.updatePendingClientsCount();
-      console.log(data);
     });
   }
 
