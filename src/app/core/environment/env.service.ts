@@ -3,6 +3,7 @@ export class EnvService {
 
     public apiRestDomain = '';
     public adminContext = '';
+    public notificationsContext = '';
     public mqttBroker = '';
     public mqttPort = '';
     public mqttUser = '';

@@ -1,1 +1,24 @@
-<p>admin works!</p>
+<div class="flex flex-col justify-between h-screen p-8">
+  <div class="w-full flex justify-between items-start">
+    <h1 class="text-4xl font-bold">Administrador: {{ adminName }}</h1>
+    <button
+      (click)="signOut()"
+      class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Desconectar
+    </button>
+  </div>
+
+  <div class="flex justify-center items-center self-center">
+    <button
+      (click)="passTurn()"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+    >
+      PASAR TURNO
+    </button>
+    <p class="text-lg">{{ currentNumber }}</p>
+    <p class="text-lg ml-4">Clientes pendientes: {{ pendingClientsCount }}</p>
+  </div>
+
+  <p class="text-base self-center">{{ turnName }}</p>
+</div>

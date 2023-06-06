@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MqttService, IMqttMessage } from 'ngx-mqtt';
+import { Router } from '@angular/router';
+import { MqttService } from 'ngx-mqtt';
+import { ITurnDto } from 'src/app/models/turn.interface';
+import { LoginService } from 'src/app/services/login.service';
+import { TurnService } from 'src/app/services/turn.service';
 
 @Component({
   selector: 'app-topic',
@@ -7,16 +11,20 @@ import { MqttService, IMqttMessage } from 'ngx-mqtt';
   styleUrls: ['./topic.component.css']
 })
 export class TopicComponent implements OnInit {
+  turns: ITurnDto[] = [];
+  selectedTurn: ITurnDto | null = null;
 
-  message: string | undefined;
-  constructor(private _mqttService: MqttService) {
+  message: any | undefined;
+  constructor(private router: Router, private _turnService: TurnService, private _loginService: LoginService, private _mqttService: MqttService) {
 
   }
   ngOnInit() {
-    this._mqttService.observe('test').subscribe((message: IMqttMessage) => {
-      console.log('Received message: ', message.payload.toString());
-    });
-    console.log('Connecting mqtt client')
+    if (!this._loginService.isTokenValid()) { //si el token a expirado redirige al login
+      this.router.navigate(['/login']);
+    }
+    this._turnService.getAllTurns().subscribe((data: ITurnDto[]) => {
+      this.turns = data;
+    })
   }
 }
 

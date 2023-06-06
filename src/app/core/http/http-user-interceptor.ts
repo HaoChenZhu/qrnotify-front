@@ -1,15 +1,14 @@
 import { Injectable } from "@angular/core";
 import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { AuthService } from "../security/auth.service";
-import OktaAuth from "@okta/okta-auth-js";
+import { Router } from "@angular/router";
+
 
 @Injectable()
 export class HttpUserInterceptor implements HttpInterceptor {
 
-    constructor() { }
+    constructor(private router: Router) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler) {
-        // Obtén el token de acceso de Okta
         if (request.url.includes('user')) {
             // Añade el token solo a las peticiones a la API de administradores
             const token = localStorage.getItem('token');
@@ -18,6 +17,8 @@ export class HttpUserInterceptor implements HttpInterceptor {
                     headers: request.headers.set('Authorization', `Bearer ${token}`)
                 });
                 return next.handle(clonedReq);
+            } {
+                this.router.navigate(['/login']);
             }
         }
 

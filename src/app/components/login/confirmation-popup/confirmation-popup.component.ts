@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IClientDto } from 'src/app/models/turn.interface';
+import { IUserDto } from 'src/app/models/user.interface';
 import { CommonService } from 'src/app/services/common.service';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -29,15 +31,17 @@ export class ConfirmationPopupComponent implements OnInit {
   onSubmit(form: NgForm) {
     let telephone = this._loginService.telephone;
     let name = this._loginService.name;
-    console.log(telephone + form.value.verificationCode);
     // Validar el código de verificación aquí y enviarlo al servidor si es válido
     this._loginService.verify(name, telephone, form.value.verificationCode).subscribe({
       next: (user: any) => {
-        localStorage.setItem('token', user.token);
+        this._loginService.setToken(user.token);
+        this._loginService.getClientByPhone(this._loginService.telephone).subscribe((client: IUserDto) => {
+          this._loginService.setClientId(client.id);
+        });
         let modal = document.getElementById('modalVerification') as HTMLElement;
         modal.classList.toggle('hidden');
         form.reset();
-        this.router.navigate(['/qrcode']);
+        this.router.navigate(['/topic']);
       },
       error: (error) => {
         if (this.failedAttempts === 0) {
@@ -54,7 +58,7 @@ export class ConfirmationPopupComponent implements OnInit {
           form.reset();
         }
       }
-    }) // Solo para fines de demostración
+    })
   }
 
   check() {

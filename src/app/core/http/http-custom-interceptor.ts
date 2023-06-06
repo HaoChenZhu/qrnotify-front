@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { AuthService } from "../security/auth.service";
-import OktaAuth from "@okta/okta-auth-js";
+/* import { AuthService } from "../security/auth.service";
+ */import OktaAuth from "@okta/okta-auth-js";
 
 @Injectable()
 export class HttpCustomInterceptor implements HttpInterceptor {

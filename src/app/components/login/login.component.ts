@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import OktaAuth from '@okta/okta-auth-js';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IUserDto } from 'src/app/models/user.interface';
 import { CommonService } from 'src/app/services/common.service';
@@ -22,15 +23,20 @@ export class LoginComponent implements OnInit {
   constructor(
     private _commonService: CommonService,
     private _loginService: LoginService,
-    private oktaAuth: OktaAuth
+    private oktaAuth: OktaAuth,
+    private router: Router,
   ) { }
   ngOnInit(): void {
+    if (this._loginService.isTokenValid()) { // si el token no ha expirado redirigir a topic
+      this.router.navigate(['/topic']);
+    }
     this.subscription = this._loginService.actionModal$.subscribe((item) => {
       this.modal = item;
       if (this.modal) {
         console.log('open modal');
       }
     })
+
   }
 
   onSubmit(loginForm: NgForm) {
@@ -57,11 +63,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-
-
     this._loginService.login(loginForm.value.name, loginForm.value.phone).subscribe({
       next: (user: IUserDto) => {
-        console.log(user)
         // Aquí puedes manejar la respuesta de la API si es necesario.
         // Por ejemplo, podrías mostrar un mensaje de que el código de confirmación ha sido enviado.
         this._loginService.telephone = user.phone_number || '';
@@ -72,7 +75,7 @@ export class LoginComponent implements OnInit {
         alert("Ha ocurrido un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.");
       },
       complete: () => {
-        this._loginService.openVerificationModal('Login', 'Are you sure you want to login?', 'Login')
+        this._loginService.openVerificationModal('Verification code', 'Introduce el codigo de verificación', 'Enter')
         loginForm.reset();
       }
     });

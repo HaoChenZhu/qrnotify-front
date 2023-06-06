@@ -37,6 +37,4 @@ export class CommonService {
     this._actionModal.next(action);
   }
 
-
-
 }

@@ -1,0 +1,36 @@
+<div class="min-h-screen flex items-center justify-center">
+  <div class="flex flex-col items-center text-center">
+    <!-- Título -->
+    <h1 class="text-4xl mb-8">{{ turnName }}</h1>
+
+    <!-- Carrusel -->
+    <div class="flex justify-center overflow-hidden border-black border-4">
+      <div
+        *ngIf="previousNumber !== null"
+        class="p-4 text-5xl mx-10 opacity-50"
+      >
+        <div>
+          {{ previousNumber }}
+        </div>
+      </div>
+      <div class="p-4 text-6xl text-green-700 mx-10">
+        <div>
+          {{ currentNumber }}
+        </div>
+      </div>
+      <div *ngIf="nextNumber !== null" class="p-4 text-5xl mx-10 opacity-50">
+        <div>
+          {{ nextNumber }}
+        </div>
+      </div>
+    </div>
+    <div class="">Clientes restantes: {{ pendingClientsCount }}</div>
+    <button
+      *ngIf="!isSubscribed"
+      (click)="requestTurn(topic)"
+      class="mt-8 px-4 py-2 text-xl bg-blue-500 text-white rounded"
+    >
+      Mi Botón
+    </button>
+  </div>
+</div>

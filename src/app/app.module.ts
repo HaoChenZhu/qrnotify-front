@@ -14,7 +14,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpCustomInterceptor } from './core/http/http-custom-interceptor';
 import { CallbackComponent } from './components/callback/callback.component';
-import { OktaAuthModule, OktaConfig } from '@okta/okta-angular';
+import { OktaAuthModule } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { EnvServiceProvider } from './core/environment/env.service.provider';
 import { AdminComponent } from './components/login/admin/admin.component';
@@ -22,11 +22,12 @@ import { HttpUserInterceptor } from './core/http/http-user-interceptor';
 import { TopicComponent } from './components/topic/topic.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { EnvService } from './core/environment/env.service';
-
+import { TurnComponent } from './components/topic/turn/turn.component';
+import { JwtModule } from '@auth0/angular-jwt';
 export const oktaConfig: any = {
   issuer: 'https://dev-86838266.okta.com/oauth2/default',
-  clientId: '',
-  redirectUri: '',
+  clientId: '0oa9gmfbgfJUiFXEG5d7',
+  redirectUri: window.location.origin + '/login/callback',
   scopes: ['openid', 'profile', 'email'],
   pkce: true
 };
@@ -39,8 +40,16 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   username: '',
   password: '',
 };
-
-
+const disallowedRoutes = [
+  '/login',
+  // Agrega más rutas aquí según tus necesidades
+];
+const allowedRoutes = [
+  'http://localhost:4200/topic',
+  '/public',
+  '/dashboard',
+  // Agrega más rutas aquí según tus necesidades
+];
 const oktaAuth = new OktaAuth(oktaConfig);
 
 @NgModule({
@@ -55,6 +64,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
     CallbackComponent,
     AdminComponent,
     TopicComponent,
+    TurnComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +73,16 @@ const oktaAuth = new OktaAuth(oktaConfig);
     QRCodeModule,
     HttpClientModule,
     OktaAuthModule.forRoot({ oktaAuth }),
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token'); // Reemplaza 'token' con el nombre de tu clave de almacenamiento para el token
+        },
+        allowedDomains: allowedRoutes, // Reemplaza 'example.com' con tu dominio permitido
+        disallowedRoutes: disallowedRoutes // Reemplaza 'example.com/login' con las rutas que no requieren autenticación
+      }
+    }),
 
   ],
   providers: [

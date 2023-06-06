@@ -1,4 +1,5 @@
 export interface IUserDto {
+    id?: string;
     name?: string;
     phone_number?: string;
     created_date?: string;
