@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { IClientDto, ITurnDto } from 'src/app/models/turn.interface';
+import { CommonService } from 'src/app/services/common.service';
 import { LoginService } from 'src/app/services/login.service';
 import { TurnService } from 'src/app/services/turn.service';
 
@@ -26,25 +27,26 @@ export class TurnComponent implements OnInit, OnDestroy {
 
   message: any | undefined;
   topic: string | undefined;
-
+  literals: any;
   isSubscribed = false;
-  clientId: string | null = null;
+  clientId = '';
   clientCurrentTurn: string | undefined;
   turnName: string | undefined;
   private mqttSubscription: Subscription | null = null;
 
-  constructor(private _loginService: LoginService, private _mqttService: MqttService, private _turnService: TurnService, private route: ActivatedRoute) {
+  constructor(private _loginService: LoginService, private _mqttService: MqttService, private _turnService: TurnService, private route: ActivatedRoute, private _commonService: CommonService) {
 
   }
 
   ngOnInit(): void {
-    this.clientId = this._loginService.getClientId();
+    this.literals = this._commonService.getLiterals();
+    this.clientId = this._loginService.getClientId() || '';
     this.route.params.subscribe((params: any) => {
       this.turnId = params['id'];
+      const subscribedTopic = localStorage.getItem(this.turnId + 'subscribedToTopic');
+      if (subscribedTopic) this.subscribe(subscribedTopic);
+      this.getTurnById();
     })
-    const subscribedTopic = localStorage.getItem(this.turnId + 'subscribedToTopic');
-    if (subscribedTopic) this.subscribe(subscribedTopic);
-    this.getTurnById();
   }
 
   getTurnById() {
@@ -107,8 +109,6 @@ export class TurnComponent implements OnInit, OnDestroy {
           console.error('El mensaje recibido no es válido');
           return;
         }
-        console.log('Received message: ', message.payload.toString());
-
         // Actualizar el estado de la cola y ordenar los turnos de menor a mayor
         const turnos = this.message.turns?.map((turno: { turn_number: any; }) => Number(turno.turn_number)).sort((a: any, b: any) => a - b);
         this.currentNumber = Number(this.message.current_turn);

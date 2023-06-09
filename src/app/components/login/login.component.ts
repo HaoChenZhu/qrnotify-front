@@ -20,21 +20,18 @@ export class LoginComponent implements OnInit {
   phone: string = '';
   nameError: boolean = false;
   phoneError: boolean = false;
+  literals: any;
   constructor(
-    private _commonService: CommonService,
     private _loginService: LoginService,
     private router: Router,
+    private _commonService: CommonService
   ) { }
   ngOnInit(): void {
+    this.literals = this._commonService.getLiterals();
     if (this._loginService.isTokenValid()) { // si el token no ha expirado redirigir a topic
       this.router.navigate(['/topic']);
     }
-    this.subscription = this._loginService.actionModal$.subscribe((item) => {
-      this.modal = item;
-      if (this.modal) {
-        console.log('open modal');
-      }
-    })
+
   }
 
   onSubmit(loginForm: NgForm) {

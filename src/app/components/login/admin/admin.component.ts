@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import OktaAuth from '@okta/okta-auth-js';
 import { ITurnDto } from 'src/app/models/turn.interface';
+import { CommonService } from 'src/app/services/common.service';
 import { TurnService } from 'src/app/services/turn.service';
 
 @Component({
@@ -10,22 +11,23 @@ import { TurnService } from 'src/app/services/turn.service';
 })
 export class AdminComponent implements OnInit {
 
-  adminName: string | undefined;
-  turnName: string | undefined;
-  currentNumber: string | undefined;
+  adminName = '';
+  turnName = '';
+  currentNumber = '';
   turn: ITurnDto | undefined;
-  pendingClientsCount: number | undefined;
+  pendingClientsCount: number | undefined = 0;
   turnId: string | null | undefined;
-  constructor(private oktaAuth: OktaAuth, private _turnService: TurnService) { }
+  literals: any;
+  constructor(private oktaAuth: OktaAuth, private _turnService: TurnService, private _commonService: CommonService) { }
 
   ngOnInit() {
+    this.literals = this._commonService.getLiterals();
     this.getUserDetails();
     this.turnId = localStorage.getItem('turnId');
     if (!this.turnId) {
       this.activateTurn();
     } else {
       this.getTurnById();
-
     }
 
   }
@@ -34,8 +36,8 @@ export class AdminComponent implements OnInit {
     if (!this.turnId) return;
     this._turnService.getTurnById(this.turnId).subscribe((data: ITurnDto) => {
       this.turn = data;
-      this.turnName = data.name;
-      this.currentNumber = data.current_turn;
+      this.turnName = data.name || ' ';
+      this.currentNumber = data.current_turn || ' ';
       this.updatePendingClientsCount();
       console.log(data);
     });
@@ -43,14 +45,14 @@ export class AdminComponent implements OnInit {
 
   async getUserDetails() {
     const user = await this.oktaAuth.getUser();
-    this.adminName = user.name;
+    this.adminName = user.name || ' ';
   }
 
   activateTurn() {
     this._turnService.activateTurn().subscribe((data: ITurnDto) => {
       this.turn = data;
       this.turnId = data.id;
-      this.turnName = data.name;
+      this.turnName = data.name || " ";
       this.currentNumber = data.current_turn || " ";
       this.updatePendingClientsCount();
       if (this.turnId) localStorage.setItem('turnId', this.turnId);
@@ -60,8 +62,8 @@ export class AdminComponent implements OnInit {
   passTurn() {
     this._turnService.passTurn().subscribe((data: ITurnDto) => {
       this.turn = data;
-      this.turnName = data.name;
-      this.currentNumber = data.current_turn;
+      this.turnName = data.name || " ";
+      this.currentNumber = data.current_turn || " ";
       this.updatePendingClientsCount();
     });
   }

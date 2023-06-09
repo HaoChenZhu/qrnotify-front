@@ -11,7 +11,7 @@
         <label
           for="name"
           class="block text-center text-lg text-white font-medium mb-2"
-          >Nombre</label
+          >{{ literals.name }}</label
         >
         <input
           type="text"
@@ -30,10 +30,10 @@
           class="text-red-500"
         >
           <div *ngIf="nameField.errors?.['required']">
-            El nombre es obligatorio.
+            {{ literals.nameRequired }}
           </div>
           <div *ngIf="nameField.errors?.['minlength']">
-            El nombre debe tener al menos 3 caracteres.
+            {{ literals.nameMinLegth }}
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
         <label
           for="phone"
           class="block text-center text-lg text-white font-medium mb-2"
-          >Teléfono</label
+          >{{ literals.telephone }}</label
         >
         <input
           type="tel"
@@ -61,10 +61,10 @@
           class="text-red-500"
         >
           <div *ngIf="phoneField.errors?.['required']">
-            El número de teléfono es obligatorio.
+            {{ literals.phoneRequired }}
           </div>
           <div *ngIf="phoneField.errors?.['minlength']">
-            El número de teléfono debe tener al menos 9 caracteres.
+            {{ literals.phoneMinLength }}
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
           type="submit"
           class="bg-blue-500 hover:bg-blue-600 text-white bg-opacity-70 font-medium py-2 px-4 rounded-lg"
         >
-          Iniciar sesión
+          {{ literals.login }}
         </button>
       </div>
     </form>

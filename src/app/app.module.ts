@@ -42,13 +42,13 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 };
 const disallowedRoutes = [
   '/login',
-  // Agrega más rutas aquí según tus necesidades
+  '/login/callback',
+  '/qrcode'
 ];
 const allowedRoutes = [
   'http://localhost:4200/topic',
   '/public',
   '/dashboard',
-  // Agrega más rutas aquí según tus necesidades
 ];
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -77,10 +77,10 @@ const oktaAuth = new OktaAuth(oktaConfig);
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('token'); // Reemplaza 'token' con el nombre de tu clave de almacenamiento para el token
+          return localStorage.getItem('token');
         },
-        allowedDomains: allowedRoutes, // Reemplaza 'example.com' con tu dominio permitido
-        disallowedRoutes: disallowedRoutes // Reemplaza 'example.com/login' con las rutas que no requieren autenticación
+        allowedDomains: allowedRoutes,
+        disallowedRoutes: disallowedRoutes
       }
     }),
 

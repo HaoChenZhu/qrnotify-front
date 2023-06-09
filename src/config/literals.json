@@ -1,0 +1,19 @@
+{
+  "title": "QRNotify",
+  "chooseService": "Elige su turno de atención",
+  "minutes": "mins",
+  "pendingClients": "Clientes en espera: ",
+  "requestTurn": "Solicitar turno",
+  "login": "Iniciar sesión",
+  "phoneMinLength": "El número de teléfono debe tener 9 dígitos",
+  "phoneRequired": "El número de teléfono es requerido",
+  "telephone": "Teléfono",
+  "nameMinLength": "El nombre debe tener al menos 3 caracteres",
+  "nameRequired": "El nombre es obligatorio",
+  "name": "Nombre",
+  "passTurn": "PASAR TURNO",
+  "currentTurn": "Turno actual: ",
+  "admin": "Administrador: ",
+  "send": "Enviar",
+  "cancel": "Cancelar"
+}

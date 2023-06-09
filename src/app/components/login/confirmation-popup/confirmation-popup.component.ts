@@ -17,8 +17,10 @@ export class ConfirmationPopupComponent implements OnInit {
   option: string = '';
   verificationCode: string = '';
   failedAttempts: number = 0;
+  literals: any;
   constructor(private router: Router, private _commonService: CommonService, private _loginService: LoginService) { }
   ngOnInit(): void {
+    this.literals = this._commonService.getLiterals();
     this.check();
     this.resetFailedAttempts();
   }

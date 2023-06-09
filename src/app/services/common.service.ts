@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import literals from '../../config/literals.json';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class CommonService {
 
   constructor() { }
   private _actionModal = new BehaviorSubject<boolean>(false);
-  // Observable modal action
+
   actionModal$ = this._actionModal.asObservable();
 
   openModal(title: string, description?: string, option?: string) {
@@ -35,6 +36,10 @@ export class CommonService {
 
   changeAction(action: boolean) {
     this._actionModal.next(action);
+  }
+
+  getLiterals() {
+    return { ...literals };
   }
 
 }

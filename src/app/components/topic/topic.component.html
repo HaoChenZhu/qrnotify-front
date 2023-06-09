@@ -1,5 +1,5 @@
 <div class="bg-black text-white py-4">
-  <h1 class="text-center text-xl">Elegir turno de atención</h1>
+  <h1 class="text-center text-xl">{{ literals.chooseService }}</h1>
 </div>
 <div class="mt-6 px-4">
   <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
@@ -10,10 +10,10 @@
       <a [routerLink]="['/turn', turn.id]">
         <div class="flex justify-between">
           <h2 class="text-white font-bold text-lg">{{ turn.name }}</h2>
-          <p class="text-gray-600">{{ turn.estimated_time }} min</p>
+          <p class="text-gray-600">
+            {{ turn.estimated_time + " " + literals.minutes }}
+          </p>
         </div>
-
-        <!-- otros campos... -->
       </a>
     </div>
   </div>

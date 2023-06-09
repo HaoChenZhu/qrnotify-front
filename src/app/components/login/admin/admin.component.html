@@ -1,6 +1,6 @@
 <div class="flex flex-col justify-between h-screen p-8">
   <div class="w-full flex justify-between items-start">
-    <h1 class="text-4xl font-bold">Administrador: {{ adminName }}</h1>
+    <h1 class="text-4xl font-bold">{{ literals.admin + adminName }}</h1>
     <button
       (click)="signOut()"
       class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -12,13 +12,20 @@
   <div class="flex justify-center items-center self-center">
     <button
       (click)="passTurn()"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-20 px-4 rounded mr-4"
     >
-      PASAR TURNO
+      {{ literals.passTurn }}
     </button>
-    <p class="text-lg">{{ currentNumber }}</p>
-    <p class="text-lg ml-4">Clientes pendientes: {{ pendingClientsCount }}</p>
+    <div class="border border-blue-500 rounded p-20 mr-4">
+      <p class="text-2xl">{{ literals.currentTurn + currentNumber }}</p>
+    </div>
+
+    <div class="border border-blue-500 rounded p-20">
+      <p class="text-2xl">
+        {{ literals.pendingClients + pendingClientsCount }}
+      </p>
+    </div>
   </div>
 
-  <p class="text-base self-center">{{ turnName }}</p>
+  <p class="self-center text-4xl">{{ turnName }}</p>
 </div>

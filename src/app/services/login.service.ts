@@ -56,7 +56,6 @@ export class LoginService {
       'name': name,
       'phone_number': phone_number
     };
-    console.log(body)
     return this.http.post<IUserDto>(this.LOGIN_URL, body);
   }
   setToken(token: string): void {
@@ -74,7 +73,6 @@ export class LoginService {
     return !isExpired;
   }
 
-
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.clientId);
@@ -91,7 +89,6 @@ export class LoginService {
       'phone_number': phone_number,
       'code': code
     };
-    console.log(body)
     return this.http.post<IUserDto>(this.VERIFY_URL, body);
   }
   getClientByPhone(number: string) {
