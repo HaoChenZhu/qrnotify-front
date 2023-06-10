@@ -5,15 +5,23 @@ import { HttpClient } from '@angular/common/http';
 import { ITurnDto } from '../models/turn.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TurnService {
-  private readonly GET_ALL_TURNS_URL = this.env.apiRestDomain + this.env.notificationsContext + '/user/turns'
-  private readonly AVTIVATE_TURN_URL = this.env.apiRestDomain + this.env.notificationsContext + '/admin/turn'
-  private readonly PASS_TURN_URL = this.env.apiRestDomain + this.env.notificationsContext + '/admin/pass-turn'
-  private readonly GET_TURN_URL = this.env.apiRestDomain + this.env.notificationsContext + '/turn'
-  private readonly GET_ACTIVATE_TURN_URL = this.env.apiRestDomain + this.env.notificationsContext + '/user/request-turn'
-  constructor(private http: HttpClient, private env: EnvService) { }
+  private readonly GET_ALL_TURNS_URL =
+    this.env.apiRestDomain + this.env.notificationsContext + '/user/turns';
+  private readonly AVTIVATE_TURN_URL =
+    this.env.apiRestDomain + this.env.notificationsContext + '/admin/turn';
+  private readonly PASS_TURN_URL =
+    this.env.apiRestDomain + this.env.notificationsContext + '/admin/pass-turn';
+  private readonly GET_TURN_URL =
+    this.env.apiRestDomain + this.env.notificationsContext + '/turn';
+  private readonly GET_ACTIVATE_TURN_URL =
+    this.env.apiRestDomain +
+    this.env.notificationsContext +
+    '/user/request-turn';
+
+  constructor(private http: HttpClient, private env: EnvService) {}
 
   getAllTurns() {
     return this.http.get<ITurnDto[]>(this.GET_ALL_TURNS_URL);
@@ -24,9 +32,11 @@ export class TurnService {
   }
 
   requestTurn(id: string) {
-    const params = { turnId: id }
+    const params = { turnId: id };
 
-    return this.http.post<ITurnDto>(this.GET_ACTIVATE_TURN_URL, null, { params });
+    return this.http.post<ITurnDto>(this.GET_ACTIVATE_TURN_URL, null, {
+      params,
+    });
   }
 
   activateTurn() {
@@ -36,7 +46,4 @@ export class TurnService {
   passTurn() {
     return this.http.post<ITurnDto>(this.PASS_TURN_URL, null);
   }
-
-
-
 }

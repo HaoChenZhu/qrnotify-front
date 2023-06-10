@@ -15,5 +15,7 @@
   "currentTurn": "Turno actual: ",
   "admin": "Administrador: ",
   "send": "Enviar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "accept": "Aceptar",
+  "disconnect": "Desconectar"
 }

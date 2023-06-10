@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
@@ -29,7 +28,7 @@ export const oktaConfig: any = {
   clientId: '0oa9gmfbgfJUiFXEG5d7',
   redirectUri: window.location.origin + '/login/callback',
   scopes: ['openid', 'profile', 'email'],
-  pkce: true
+  pkce: true,
 };
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -40,16 +39,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   username: '',
   password: '',
 };
-const disallowedRoutes = [
-  '/login',
-  '/login/callback',
-  '/qrcode'
-];
-const allowedRoutes = [
-  'http://localhost:4200/topic',
-  '/public',
-  '/dashboard',
-];
+
+const disallowedRoutes = ['/login', '/login/callback', '/qrcode'];
+const allowedRoutes = ['http://localhost:4200/topic', '/public', '/dashboard'];
 const oktaAuth = new OktaAuth(oktaConfig);
 
 @NgModule({
@@ -80,19 +72,22 @@ const oktaAuth = new OktaAuth(oktaConfig);
           return localStorage.getItem('token');
         },
         allowedDomains: allowedRoutes,
-        disallowedRoutes: disallowedRoutes
-      }
+        disallowedRoutes: disallowedRoutes,
+      },
     }),
-
   ],
   providers: [
     FormsModule,
     { provide: OktaAuth, useValue: oktaAuth },
     { provide: HTTP_INTERCEPTORS, useClass: HttpUserInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpCustomInterceptor, multi: true },
-    EnvServiceProvider
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCustomInterceptor,
+      multi: true,
+    },
+    EnvServiceProvider,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(private env: EnvService) {
@@ -102,8 +97,8 @@ export class AppModule {
     const port = this.env ? this.env.mqttPort : undefined; // Verificar si env está definido
     const username = this.env ? this.env.mqttUser : undefined; // Verificar si env está definido
     const password = this.env ? this.env.mqttPassword : undefined; // Verificar si env está definido
-    const callback = window.location.origin + '/login/callback'
-    console.log('mqttBroker: ', mqttBroker, 'port: ', port, 'username: ', username, 'password: ', password, 'issuer: ', issuer, 'clientId: ', clientId, 'callback: ', callback);
+    const callback = window.location.origin + '/login/callback';
+
     if (mqttBroker && port && username && password) {
       MQTT_SERVICE_OPTIONS.hostname = mqttBroker;
       MQTT_SERVICE_OPTIONS.port = Number(port);
@@ -117,6 +112,4 @@ export class AppModule {
       oktaConfig.redirectUri = callback;
     }
   }
-
 }
-

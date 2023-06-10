@@ -28,6 +28,5 @@
   window.__env.mqttPassword = "123";
   window.__env.oktaDomain = "https://dev-86838266.okta.com/oauth2/default";
   window.__env.oktaClientId = "0oa9gmfbgfJUiFXEG5d7";
-  // Whether or not to enable debug mode
   window.__env.enableDebug = true;
 })(this);

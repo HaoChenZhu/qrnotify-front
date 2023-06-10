@@ -3,14 +3,14 @@ import { BehaviorSubject } from 'rxjs';
 import literals from '../../config/literals.json';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
   title = 'commonTitle';
   description = 'commonDesc';
   option = 'optionDesc';
 
-  constructor() { }
+  constructor() {}
   private _actionModal = new BehaviorSubject<boolean>(false);
 
   actionModal$ = this._actionModal.asObservable();
@@ -31,7 +31,9 @@ export class CommonService {
     }
 
     let modal = document.getElementById('modal') as HTMLElement;
-    if (modal) { modal.classList.toggle('hidden'); }
+    if (modal) {
+      modal.classList.toggle('hidden');
+    }
   }
 
   changeAction(action: boolean) {
@@ -41,5 +43,4 @@ export class CommonService {
   getLiterals() {
     return { ...literals };
   }
-
 }
